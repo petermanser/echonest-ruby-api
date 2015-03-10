@@ -95,13 +95,12 @@ module Echonest
       artists
     end
 
-    def similar(options = { results: 20 })
+    def similar(options = {})
       artists = []
-      response = get('artist/similar', {name: @name, results: options[:results]})
-      response[:artists].each do |a|
-        artists << a
+      get_response(options)[:artists].each do |a|
+        artists << Artist.new(@api_key, a[:name], a[:foreign_ids], a[:id])
       end
-      return artists
+      artists
     end
 
     def suggest(options = {})
